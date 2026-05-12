@@ -31,7 +31,9 @@ def parse(file_path):
             elif 'Конец' in line:
                 indent_count -= 1
             else:
-                content.append('  ' * indent_count + line)
+                name, value = line.split(': ', 1)
+                value = ' \'' + value.strip().replace('\'', '\'\'') + '\'' if value != '\n' else ''
+                content.append('  ' * indent_count + name + ':' + value + '\n')
 
     content_as_str = ''.join(content)
     return yaml.load(content_as_str, Loader=yaml.FullLoader)
